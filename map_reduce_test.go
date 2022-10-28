@@ -23,4 +23,14 @@ var _ = Describe("MapReduce", func() {
 		})
 	})
 
+	Describe("Reduce", func() {
+		It("reduces a slice to a single value", func() {
+			source := []int{1, 2, 3}
+			target := gog.Reduce(source, ">", func(accum string, value int) string {
+				return accum + strconv.Itoa(value)
+			})
+			Expect(target).To(Equal(">123"))
+		})
+	})
+
 })

@@ -7,6 +7,7 @@ import (
 )
 
 var _ = Describe("Pointer", func() {
+
 	Describe("PtrOf", func() {
 		It("returns a pointer to the passed value", func() {
 			result := gog.PtrOf("hello")
@@ -31,4 +32,5 @@ var _ = Describe("Pointer", func() {
 			Expect(gog.ValueOf(nil, "default")).To(Equal("default"))
 		})
 	})
+
 })
