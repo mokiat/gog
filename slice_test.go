@@ -33,4 +33,14 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("Select", func() {
+		It("returns a slice of desired elements", func() {
+			source := []int{0, 1, 2, 3, 4, 5, 6}
+			target := gog.Select(source, func(v int) bool {
+				return v%2 == 0
+			})
+			Expect(target).To(Equal([]int{0, 2, 4, 6}))
+		})
+	})
+
 })

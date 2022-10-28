@@ -19,3 +19,15 @@ func Reduce[S, T any](slice []S, initialValue T, fn func(accum T, value S) T) T 
 	}
 	return result
 }
+
+// Select returns a new slice that contains only the elements of the original
+// slice that pass the filter function.
+func Select[S any](slice []S, fn func(S) bool) []S {
+	var result []S
+	for _, v := range slice {
+		if fn(v) {
+			result = append(result, v)
+		}
+	}
+	return result
+}
