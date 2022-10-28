@@ -9,7 +9,7 @@ import (
 	"github.com/mokiat/gog"
 )
 
-var _ = Describe("MapReduce", func() {
+var _ = Describe("Slice", func() {
 
 	Describe("Map", func() {
 		It("converts from one slice type to another", func() {
