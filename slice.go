@@ -31,3 +31,14 @@ func Select[S any](slice []S, fn func(S) bool) []S {
 	}
 	return result
 }
+
+// Partition splits the specified slice into groups, each having a key
+// according to the specified function.
+func Partition[S any, K comparable](slice []S, fn func(S) K) map[K][]S {
+	result := make(map[K][]S)
+	for _, v := range slice {
+		key := fn(v)
+		result[key] = append(result[key], v)
+	}
+	return result
+}

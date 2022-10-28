@@ -43,4 +43,21 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("Partition", func() {
+		It("partitions a slice", func() {
+			source := []int{0, 1, 2, 3, 4, 5, 6}
+			target := gog.Partition(source, func(v int) string {
+				if v%2 == 0 {
+					return "even"
+				} else {
+					return "odd"
+				}
+			})
+			Expect(target).To(Equal(map[string][]int{
+				"even": {0, 2, 4, 6},
+				"odd":  {1, 3, 5},
+			}))
+		})
+	})
+
 })
