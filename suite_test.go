@@ -9,5 +9,5 @@ import (
 
 func TestGog(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Gog Suite")
+	RunSpecs(t, "GoG Suite")
 }
