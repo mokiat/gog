@@ -1,4 +1,4 @@
-package gog_test
+package ds_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestGog(t *testing.T) {
+func TestDs(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "GoG Suite")
+	RunSpecs(t, "Data Structures Suite")
 }
