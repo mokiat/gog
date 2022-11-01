@@ -42,3 +42,17 @@ func Partition[S any, K comparable](slice []S, fn func(S) K) map[K][]S {
 	}
 	return result
 }
+
+// Dedupe returns a new slice that contains only distinct elements from
+// the original slice.
+func Dedupe[T comparable](slice []T) []T {
+	seen := make(map[T]struct{}, len(slice))
+	result := make([]T, 0, len(slice))
+	for _, v := range slice {
+		if _, ok := seen[v]; !ok {
+			result = append(result, v)
+			seen[v] = struct{}{}
+		}
+	}
+	return result
+}

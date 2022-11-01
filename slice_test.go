@@ -60,4 +60,14 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("Dedupe", func() {
+		It("returns a slice of distinct elements", func() {
+			source := []int{0, 0, 2, 3, 3, 5, 6, 6}
+			target := gog.Dedupe(source)
+			Expect(target).To(Equal([]int{
+				0, 2, 3, 5, 6,
+			}))
+		})
+	})
+
 })
