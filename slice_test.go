@@ -12,14 +12,20 @@ import (
 var _ = Describe("Slice", func() {
 
 	Describe("Map", func() {
+		mapFunc := func(v int) string {
+			return strconv.Itoa(v)
+		}
+
 		It("converts from one slice type to another", func() {
 			source := []int{1, 2, 3}
-			target := gog.Map(source, func(v int) string {
-				return strconv.Itoa(v)
-			})
+			target := gog.Map(source, mapFunc)
 			Expect(target).To(Equal([]string{
 				"1", "2", "3",
 			}))
+		})
+
+		It("preserves the nil slice", func() {
+			Expect(gog.Map(nil, mapFunc)).To(Equal([]string(nil)))
 		})
 	})
 
@@ -34,12 +40,18 @@ var _ = Describe("Slice", func() {
 	})
 
 	Describe("Select", func() {
+		selectFunc := func(v int) bool {
+			return v%2 == 0
+		}
+
 		It("returns a slice of desired elements", func() {
 			source := []int{0, 1, 2, 3, 4, 5, 6}
-			target := gog.Select(source, func(v int) bool {
-				return v%2 == 0
-			})
+			target := gog.Select(source, selectFunc)
 			Expect(target).To(Equal([]int{0, 2, 4, 6}))
+		})
+
+		It("preserves the nil slice", func() {
+			Expect(gog.Select(nil, selectFunc)).To(Equal([]int(nil)))
 		})
 	})
 
@@ -67,6 +79,10 @@ var _ = Describe("Slice", func() {
 			Expect(target).To(Equal([]int{
 				0, 2, 3, 5, 6,
 			}))
+		})
+
+		It("preserves the nil slice", func() {
+			Expect(gog.Dedupe[int](nil)).To(Equal([]int(nil)))
 		})
 	})
 

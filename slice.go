@@ -3,6 +3,9 @@ package gog
 // Map can be used to transform one slice into another by providing a
 // function to do the mapping.
 func Map[S, T any](slice []S, fn func(S) T) []T {
+	if slice == nil {
+		return nil
+	}
 	result := make([]T, len(slice))
 	for i, v := range slice {
 		result[i] = fn(v)
@@ -46,6 +49,9 @@ func Partition[S any, K comparable](slice []S, fn func(S) K) map[K][]S {
 // Dedupe returns a new slice that contains only distinct elements from
 // the original slice.
 func Dedupe[T comparable](slice []T) []T {
+	if slice == nil {
+		return nil
+	}
 	seen := make(map[T]struct{}, len(slice))
 	result := make([]T, 0, len(slice))
 	for _, v := range slice {
