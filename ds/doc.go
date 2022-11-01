@@ -1,2 +1,2 @@
-// Package ds provides various data structue implementations with generics.
+// Package ds provides various data structure implementations with generics.
 package ds
