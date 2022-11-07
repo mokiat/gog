@@ -72,6 +72,23 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("Mapping", func() {
+		It("partitions a slice into custom buckets", func() {
+			source := []int{0, 1, 2, 3, 4, 5, 6}
+			target := gog.Mapping(source, func(v int) (string, string) {
+				if v%2 == 0 {
+					return "even", strconv.Itoa(v)
+				} else {
+					return "odd", strconv.Itoa(v)
+				}
+			})
+			Expect(target).To(Equal(map[string][]string{
+				"even": {"0", "2", "4", "6"},
+				"odd":  {"1", "3", "5"},
+			}))
+		})
+	})
+
 	Describe("Dedupe", func() {
 		It("returns a slice of distinct elements", func() {
 			source := []int{0, 0, 2, 3, 3, 5, 6, 6}
@@ -83,6 +100,23 @@ var _ = Describe("Slice", func() {
 
 		It("preserves the nil slice", func() {
 			Expect(gog.Dedupe[int](nil)).To(Equal([]int(nil)))
+		})
+	})
+
+	Describe("Flatten", func() {
+		It("returns a flat slice", func() {
+			source := [][]int{
+				{1, 2, 5, 8, 8},
+				{1, 11},
+			}
+			target := gog.Flatten(source)
+			Expect(target).To(Equal([]int{
+				1, 2, 5, 8, 8, 1, 11,
+			}))
+		})
+
+		It("preserves the nil slice", func() {
+			Expect(gog.Flatten[int](nil)).To(Equal([]int(nil)))
 		})
 	})
 

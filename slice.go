@@ -46,6 +46,20 @@ func Partition[S any, K comparable](slice []S, fn func(S) K) map[K][]S {
 	return result
 }
 
+// Mapping is similar to Partition, except that it allows one to transform
+// the values stored in the partition buckets.
+// In essence, it allows the caller to construct an almost arbitrary map
+// (it is always of kind map[key][]value, though the types of the keys and the
+// values are user controlled) from an arbitrary slice.
+func Mapping[S any, K comparable, V any](slice []S, fn func(S) (K, V)) map[K][]V {
+	result := make(map[K][]V)
+	for _, v := range slice {
+		key, value := fn(v)
+		result[key] = append(result[key], value)
+	}
+	return result
+}
+
 // Dedupe returns a new slice that contains only distinct elements from
 // the original slice.
 func Dedupe[T comparable](slice []T) []T {
@@ -59,6 +73,16 @@ func Dedupe[T comparable](slice []T) []T {
 			result = append(result, v)
 			seen[v] = struct{}{}
 		}
+	}
+	return result
+}
+
+// Flatten returns a new slice that is the result of merging all nested
+// slices into a single top-level slice.
+func Flatten[T any](slice [][]T) []T {
+	var result []T
+	for _, subSlice := range slice {
+		result = append(result, subSlice...)
 	}
 	return result
 }
