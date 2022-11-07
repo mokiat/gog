@@ -86,4 +86,21 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("Flatten", func() {
+		It("returns a flat slice", func() {
+			source := [][]int{
+				{1, 2, 5, 8, 8},
+				{1, 11},
+			}
+			target := gog.Flatten(source)
+			Expect(target).To(Equal([]int{
+				1, 2, 5, 8, 8, 1, 11,
+			}))
+		})
+
+		It("preserves the nil slice", func() {
+			Expect(gog.Flatten[int](nil)).To(Equal([]int(nil)))
+		})
+	})
+
 })

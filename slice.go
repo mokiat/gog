@@ -62,3 +62,13 @@ func Dedupe[T comparable](slice []T) []T {
 	}
 	return result
 }
+
+// Flatten returns a new slice that is the result of merging all nested
+// slices into a single top-level slice.
+func Flatten[T any](slice [][]T) []T {
+	var result []T
+	for _, subSlice := range slice {
+		result = append(result, subSlice...)
+	}
+	return result
+}
