@@ -10,6 +10,36 @@ func NewSet[T comparable](initialCapacity int) *Set[T] {
 	}
 }
 
+// SetFromSlice creates a new Set instance based on the elements contained
+// in the provided slice.
+func SetFromSlice[T comparable](slice []T) *Set[T] {
+	result := NewSet[T](len(slice))
+	for _, item := range slice {
+		result.items[item] = struct{}{}
+	}
+	return result
+}
+
+// SetFromMapKeys creates a new Set instance based on the keys of the
+// provided map.
+func SetFromMapKeys[T comparable, V any](m map[T]V) *Set[T] {
+	result := NewSet[T](len(m))
+	for key := range m {
+		result.items[key] = struct{}{}
+	}
+	return result
+}
+
+// SetFromMapValues creates a new Set instance based on the values of the
+// provided map.
+func SetFromMapValues[K comparable, V comparable](m map[K]V) *Set[V] {
+	result := NewSet[V](len(m))
+	for _, value := range m {
+		result.items[value] = struct{}{}
+	}
+	return result
+}
+
 // Set represents a set data structure, where only one instance
 // of a given item is stored.
 //
