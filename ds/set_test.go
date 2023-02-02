@@ -103,4 +103,100 @@ var _ = Describe("Set", func() {
 			})
 		})
 	})
+
+	When("constructed from a slice", func() {
+		BeforeEach(func() {
+			set = ds.SetFromSlice([]string{"a", "c", "c", "b", "a", "d"})
+		})
+
+		It("has the correct size", func() {
+			Expect(set.Size()).To(Equal(4))
+		})
+
+		It("contains the elements of the slice", func() {
+			Expect(set.Contains("a")).To(BeTrue())
+			Expect(set.Contains("b")).To(BeTrue())
+			Expect(set.Contains("c")).To(BeTrue())
+			Expect(set.Contains("d")).To(BeTrue())
+		})
+
+		When("the slice is nil", func() {
+			BeforeEach(func() {
+				var slice []string
+				set = ds.SetFromSlice(slice)
+			})
+
+			It("is empty", func() {
+				Expect(set.IsEmpty()).To(BeTrue())
+			})
+		})
+	})
+
+	When("constructed from a map's keys", func() {
+		BeforeEach(func() {
+			set = ds.SetFromMapKeys(map[string]int{
+				"a": 1,
+				"c": 5,
+				"b": 13,
+				"d": 31,
+			})
+		})
+
+		It("has the correct size", func() {
+			Expect(set.Size()).To(Equal(4))
+		})
+
+		It("contains the elements of the slice", func() {
+			Expect(set.Contains("a")).To(BeTrue())
+			Expect(set.Contains("b")).To(BeTrue())
+			Expect(set.Contains("c")).To(BeTrue())
+			Expect(set.Contains("d")).To(BeTrue())
+		})
+
+		When("the map is nil", func() {
+			BeforeEach(func() {
+				var m map[string]int
+				set = ds.SetFromMapKeys(m)
+			})
+
+			It("is empty", func() {
+				Expect(set.IsEmpty()).To(BeTrue())
+			})
+		})
+	})
+
+	When("constructed from a map's values", func() {
+		BeforeEach(func() {
+			set = ds.SetFromMapValues(map[int]string{
+				1: "a",
+				2: "c",
+				3: "c",
+				4: "b",
+				5: "a",
+				6: "d",
+			})
+		})
+
+		It("has the correct size", func() {
+			Expect(set.Size()).To(Equal(4))
+		})
+
+		It("contains the elements of the slice", func() {
+			Expect(set.Contains("a")).To(BeTrue())
+			Expect(set.Contains("b")).To(BeTrue())
+			Expect(set.Contains("c")).To(BeTrue())
+			Expect(set.Contains("d")).To(BeTrue())
+		})
+
+		When("the map is nil", func() {
+			BeforeEach(func() {
+				var m map[int]string
+				set = ds.SetFromMapValues(m)
+			})
+
+			It("is empty", func() {
+				Expect(set.IsEmpty()).To(BeTrue())
+			})
+		})
+	})
 })
