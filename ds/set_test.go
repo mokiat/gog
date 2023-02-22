@@ -52,6 +52,19 @@ var _ = Describe("Set", func() {
 			Expect(set.Contains("missing")).To(BeFalse())
 		})
 
+		It("is possible to check if a whole different set is contained", func() {
+			subSet := ds.NewSet[string](2)
+			subSet.Add("first")
+			subSet.Add("third")
+			Expect(set.ContainsSet(subSet)).To(BeTrue())
+
+			mismatchSet := ds.NewSet[string](3)
+			mismatchSet.Add("first")
+			mismatchSet.Add("third")
+			mismatchSet.Add("fifth")
+			Expect(set.ContainsSet(mismatchSet)).To(BeFalse())
+		})
+
 		It("ignores add operations on existing items", func() {
 			Expect(set.Add("second")).To(BeFalse())
 			Expect(set.Size()).To(Equal(3))
@@ -100,6 +113,59 @@ var _ = Describe("Set", func() {
 
 			It("no longer contains the given item", func() {
 				Expect(set.Items()).To(ContainElements("first", "third"))
+			})
+		})
+
+		When("another set is added", func() {
+			BeforeEach(func() {
+				other := ds.NewSet[string](3)
+				other.Add("second")
+				other.Add("third")
+				other.Add("fourth")
+				Expect(set.AddSet(other)).To(BeTrue())
+			})
+
+			It("changes its size accordingly", func() {
+				Expect(set.Size()).To(Equal(4))
+			})
+
+			It("contains the union of the sets", func() {
+				Expect(set.Contains("first")).To(BeTrue())
+				Expect(set.Contains("second")).To(BeTrue())
+				Expect(set.Contains("third")).To(BeTrue())
+				Expect(set.Contains("fourth")).To(BeTrue())
+			})
+
+			It("returns false if the set is already contained", func() {
+				other := ds.NewSet[string](2)
+				other.Add("second")
+				other.Add("third")
+				Expect(set.AddSet(other)).To(BeFalse())
+			})
+		})
+
+		When("another set is removed", func() {
+			BeforeEach(func() {
+				other := ds.NewSet[string](2)
+				other.Add("third")
+				other.Add("fourth")
+				Expect(set.RemoveSet(other)).To(BeTrue())
+			})
+
+			It("changes its size accordingly", func() {
+				Expect(set.Size()).To(Equal(2))
+			})
+
+			It("contains the difference of the sets", func() {
+				Expect(set.Contains("first")).To(BeTrue())
+				Expect(set.Contains("second")).To(BeTrue())
+			})
+
+			It("returns false if the set is not contained", func() {
+				other := ds.NewSet[string](2)
+				other.Add("fourth")
+				other.Add("fifth")
+				Expect(set.RemoveSet(other)).To(BeFalse())
 			})
 		})
 	})
@@ -197,6 +263,92 @@ var _ = Describe("Set", func() {
 			It("is empty", func() {
 				Expect(set.IsEmpty()).To(BeTrue())
 			})
+		})
+	})
+
+	When("constructed as the union of two sets", func() {
+		var (
+			firstSet  *ds.Set[string]
+			secondSet *ds.Set[string]
+		)
+
+		BeforeEach(func() {
+			firstSet = ds.NewSet[string](2)
+			firstSet.Add("a")
+			firstSet.Add("b")
+
+			secondSet = ds.NewSet[string](2)
+			secondSet.Add("b")
+			secondSet.Add("c")
+
+			set = ds.SetUnion(firstSet, secondSet)
+		})
+
+		It("the set has the correct size", func() {
+			Expect(set.Size()).To(Equal(3))
+		})
+
+		It("contains the items from both sets", func() {
+			Expect(set.Contains("a")).To(BeTrue())
+			Expect(set.Contains("b")).To(BeTrue())
+			Expect(set.Contains("c")).To(BeTrue())
+		})
+	})
+
+	When("constructed as the difference of two sets", func() {
+		var (
+			firstSet  *ds.Set[string]
+			secondSet *ds.Set[string]
+		)
+
+		BeforeEach(func() {
+			firstSet = ds.NewSet[string](2)
+			firstSet.Add("a")
+			firstSet.Add("b")
+
+			secondSet = ds.NewSet[string](2)
+			secondSet.Add("b")
+			secondSet.Add("c")
+
+			set = ds.SetDifference(firstSet, secondSet)
+		})
+
+		It("the set has the correct size", func() {
+			Expect(set.Size()).To(Equal(1))
+		})
+
+		It("contains the items from both sets", func() {
+			Expect(set.Contains("a")).To(BeTrue())
+		})
+	})
+
+	When("constructed as the intersection of two sets", func() {
+		var (
+			firstSet  *ds.Set[string]
+			secondSet *ds.Set[string]
+		)
+
+		BeforeEach(func() {
+			firstSet = ds.NewSet[string](3)
+			firstSet.Add("a")
+			firstSet.Add("b")
+			firstSet.Add("c")
+
+			secondSet = ds.NewSet[string](3)
+			secondSet.Add("b")
+			secondSet.Add("c")
+			secondSet.Add("d")
+
+			set = ds.SetIntersection(firstSet, secondSet)
+		})
+
+		It("the set has the correct size", func() {
+			Expect(set.Size()).To(Equal(2))
+		})
+
+		It("contains the items from both sets", func() {
+			Expect(set.Contains("b")).To(BeTrue())
+			Expect(set.Contains("c")).To(BeTrue())
 		})
 	})
 })

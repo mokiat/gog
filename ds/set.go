@@ -40,6 +40,42 @@ func SetFromMapValues[K comparable, V comparable](m map[K]V) *Set[V] {
 	return result
 }
 
+// SetUnion creates a new Set that is the union of the specified sets.
+func SetUnion[T comparable](first, second *Set[T]) *Set[T] {
+	result := NewSet[T](first.Size() + second.Size())
+	for item := range first.items {
+		result.items[item] = struct{}{}
+	}
+	for item := range second.items {
+		result.items[item] = struct{}{}
+	}
+	return result
+}
+
+// SetDifference creates a new Set that holds the difference between the
+// first and the second specified sets.
+func SetDifference[T comparable](first, second *Set[T]) *Set[T] {
+	result := NewSet[T](first.Size())
+	for item := range first.items {
+		if _, ok := second.items[item]; !ok {
+			result.items[item] = struct{}{}
+		}
+	}
+	return result
+}
+
+// SetIntersection creates a new Set that holds the intersection of the
+// items of the two specified sets.
+func SetIntersection[T comparable](first, second *Set[T]) *Set[T] {
+	result := NewSet[T](0)
+	for item := range first.items {
+		if _, ok := second.items[item]; ok {
+			result.items[item] = struct{}{}
+		}
+	}
+	return result
+}
+
 // Set represents a set data structure, where only one instance
 // of a given item is stored.
 //
@@ -71,6 +107,17 @@ func (s *Set[T]) Add(item T) bool {
 	return true
 }
 
+// AddSet adds the items of another Set to this Set.
+// The operation returns true if the operation resulted in a change and
+// false otherwise.
+func (s *Set[T]) AddSet(other *Set[T]) bool {
+	var changed bool
+	for item := range other.items {
+		changed = changed || s.Add(item)
+	}
+	return changed
+}
+
 // Remove removes the specified item from this Set.
 // This method returns true if there was in fact such an item to be removed
 // and false otherwise.
@@ -82,10 +129,31 @@ func (s *Set[T]) Remove(item T) bool {
 	return true
 }
 
+// RemoveSet removes the items of another Set from this Set.
+// The operation returns true if the operation resulted in a change and
+// false otherwise.
+func (s *Set[T]) RemoveSet(other *Set[T]) bool {
+	var changed bool
+	for item := range other.items {
+		changed = changed || s.Remove(item)
+	}
+	return changed
+}
+
 // Contains returns whether this Set holds the specified item.
 func (s *Set[T]) Contains(item T) bool {
 	_, ok := s.items[item]
 	return ok
+}
+
+// ContainsSet returns whether this set fully contains another set.
+func (s *Set[T]) ContainsSet(other *Set[T]) bool {
+	for item := range other.items {
+		if !s.Contains(item) {
+			return false
+		}
+	}
+	return true
 }
 
 // Items returns a slice containing all of the items from this Set.
