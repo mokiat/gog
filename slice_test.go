@@ -120,4 +120,91 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("Mutate", func() {
+		double := func(v *int) {
+			*v *= 2
+		}
+
+		It("mutates the items of a slice", func() {
+			slice := []int{1, 2, 3, 4}
+			gog.Mutate(slice, double)
+			Expect(slice).To(Equal([]int{2, 4, 6, 8}))
+		})
+
+		It("ignores empty slices", func() {
+			slice := []int{}
+			gog.Mutate(slice, double)
+			Expect(slice).To(Equal([]int{}))
+		})
+
+		It("ignores nil slices", func() {
+			var slice []int
+			gog.Mutate(slice, double)
+			Expect(slice).To(Equal([]int(nil)))
+		})
+	})
+
+	Describe("FindFunc", func() {
+		divisibleByFive := func(v int) bool {
+			return v%5 == 0
+		}
+
+		It("returns the first matching element", func() {
+			slice := []int{3, 4, 10, 7, 5, 8}
+			element, found := gog.FindFunc(slice, divisibleByFive)
+			Expect(found).To(BeTrue())
+			Expect(element).To(Equal(10))
+		})
+
+		It("returns false if no element matches", func() {
+			slice := []int{1, 8, 4, 13}
+			_, found := gog.FindFunc(slice, divisibleByFive)
+			Expect(found).To(BeFalse())
+		})
+
+		It("returns false for empty slices", func() {
+			slice := []int{}
+			_, found := gog.FindFunc(slice, divisibleByFive)
+			Expect(found).To(BeFalse())
+		})
+
+		It("returns false for nil slices", func() {
+			var slice []int
+			_, found := gog.FindFunc(slice, divisibleByFive)
+			Expect(found).To(BeFalse())
+		})
+	})
+
+	Describe("FindFuncPtr", func() {
+		divisibleByFive := func(v int) bool {
+			return v%5 == 0
+		}
+
+		It("returns a pointer to the first matching element", func() {
+			slice := []int{3, 4, 10, 7, 5, 8}
+			element := gog.FindFuncPtr(slice, divisibleByFive)
+			Expect(element).ToNot(BeNil())
+			Expect(element).To(Equal(&slice[2]))
+			Expect(element).ToNot(Equal(&slice[4]))
+		})
+
+		It("returns nil if no element matches", func() {
+			slice := []int{1, 8, 4, 13}
+			element := gog.FindFuncPtr(slice, divisibleByFive)
+			Expect(element).To(BeNil())
+		})
+
+		It("returns nil for empty slices", func() {
+			slice := []int{}
+			element := gog.FindFuncPtr(slice, divisibleByFive)
+			Expect(element).To(BeNil())
+		})
+
+		It("returns nil for nil slices", func() {
+			var slice []int
+			element := gog.FindFuncPtr(slice, divisibleByFive)
+			Expect(element).To(BeNil())
+		})
+	})
+
 })

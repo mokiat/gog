@@ -86,3 +86,39 @@ func Flatten[T any](slice [][]T) []T {
 	}
 	return result
 }
+
+// Mutate iterates over the slice and calls the provided closure function,
+// passing a pointer to each element. This allows the user to easily modify
+// all the elements of a slice.
+func Mutate[T any](slice []T, fn func(e *T)) {
+	for i := range slice {
+		fn(&slice[i])
+	}
+}
+
+// FindFunc iterates over the slice and uses the provided closure function
+// to check whether the elements match a user-provided condition. The first
+// value that matches is returned as well as a true flag. Otherwise a
+// false flag is returned.
+func FindFunc[T any](slice []T, fn func(e T) bool) (T, bool) {
+	for _, value := range slice {
+		if fn(value) {
+			return value, true
+		}
+	}
+	var zeroT T
+	return zeroT, false
+}
+
+// FindFuncPtr iterates over the slice and uses the provided closure function
+// to check whether the elements match a user-provided condition. A pointer
+// to the first element that passes the condition is returned. If no value
+// is applicable, then nil is returned.
+func FindFuncPtr[T any](slice []T, fn func(e T) bool) *T {
+	for i := range slice {
+		if fn(slice[i]) {
+			return &slice[i]
+		}
+	}
+	return nil
+}
