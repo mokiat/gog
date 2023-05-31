@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestGog(t *testing.T) {
+func TestGoG(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "GoG Suite")
 }

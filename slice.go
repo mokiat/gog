@@ -122,3 +122,23 @@ func FindFuncPtr[T any](slice []T, fn func(e T) bool) *T {
 	}
 	return nil
 }
+
+// RefElements converts a slice of elements into a slice of pointers to
+// those same elements.
+func RefElements[T any](slice []T) []*T {
+	result := make([]*T, len(slice))
+	for i := range slice {
+		result[i] = &slice[i]
+	}
+	return result
+}
+
+// DerefElements converts a slice of element pointers into a slice of
+// those elements.
+func DerefElements[T any](slice []*T) []T {
+	result := make([]T, len(slice))
+	for i, element := range slice {
+		result[i] = *element
+	}
+	return result
+}

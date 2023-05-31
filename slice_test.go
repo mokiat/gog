@@ -207,4 +207,35 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("RefElements", func() {
+		It("returns a slice of pointers", func() {
+			slice := []int{1, 2, 3, 5, 6, 7}
+			ptrSlice := gog.RefElements(slice)
+			Expect(ptrSlice).To(HaveLen(len(slice)))
+			Expect(*ptrSlice[0]).To(Equal(1))
+			Expect(*ptrSlice[1]).To(Equal(2))
+			Expect(*ptrSlice[2]).To(Equal(3))
+			Expect(*ptrSlice[3]).To(Equal(5))
+			Expect(*ptrSlice[4]).To(Equal(6))
+			Expect(*ptrSlice[5]).To(Equal(7))
+		})
+
+		It("returns pointers to the actual elements", func() {
+			slice := []int{1}
+			ptrSlice := gog.RefElements(slice)
+			Expect(ptrSlice).To(HaveLen(1))
+			*ptrSlice[0] = 10
+			Expect(slice[0]).To(Equal(10))
+		})
+	})
+
+	Describe("DerefElements", func() {
+		It("returns a slice of values", func() {
+			first, second, third := 1, 2, 3
+			slice := []*int{&first, &second, &third}
+			valueSlice := gog.DerefElements(slice)
+			Expect(valueSlice).To(HaveLen(len(slice)))
+			Expect(valueSlice).To(ConsistOf(first, second, third))
+		})
+	})
 })
