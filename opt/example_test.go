@@ -6,7 +6,7 @@ import (
 	"github.com/mokiat/gog/opt"
 )
 
-func ExampleT() {
+func Example() {
 	type Search struct {
 		Country opt.T[string]
 		Age     opt.T[int]
