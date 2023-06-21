@@ -1,17 +1,6 @@
 package opt
 
-// T represents an optional type.
-//
-// While it is possible to represent an optional through a pointer type in
-// Go, there are a number of drawbacks:
-//
-//     - The value might be allocated on the heap due to the pointer reference
-//     - The value or structs of such values will not be comparable
-//
-// The type T allows one to overcome such limitations of pointer references.
-// Structs that are composed of such opt fields can often be safely used
-// as map keys (as long as the underlying values are comparable).
-
+// T represents an optional type of generic type D.
 type T[D any] struct {
 
 	// Specified indicates whether Value can be used.
