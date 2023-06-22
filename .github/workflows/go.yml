@@ -20,4 +20,5 @@ jobs:
           go-version: 1.19
 
       - name: Run Tests
+        working-directory: ./testing
         run: go run github.com/onsi/ginkgo/v2/ginkgo -r -randomize-all
