@@ -122,11 +122,12 @@ var _ = Describe("Set", func() {
 				other.Add("second")
 				other.Add("third")
 				other.Add("fourth")
+				other.Add("fifth")
 				Expect(set.AddSet(other)).To(BeTrue())
 			})
 
 			It("changes its size accordingly", func() {
-				Expect(set.Size()).To(Equal(4))
+				Expect(set.Size()).To(Equal(5))
 			})
 
 			It("contains the union of the sets", func() {
@@ -134,6 +135,7 @@ var _ = Describe("Set", func() {
 				Expect(set.Contains("second")).To(BeTrue())
 				Expect(set.Contains("third")).To(BeTrue())
 				Expect(set.Contains("fourth")).To(BeTrue())
+				Expect(set.Contains("fifth")).To(BeTrue())
 			})
 
 			It("returns false if the set is already contained", func() {
@@ -147,18 +149,18 @@ var _ = Describe("Set", func() {
 		When("another set is removed", func() {
 			BeforeEach(func() {
 				other := ds.NewSet[string](2)
+				other.Add("second")
 				other.Add("third")
 				other.Add("fourth")
 				Expect(set.RemoveSet(other)).To(BeTrue())
 			})
 
 			It("changes its size accordingly", func() {
-				Expect(set.Size()).To(Equal(2))
+				Expect(set.Size()).To(Equal(1))
 			})
 
 			It("contains the difference of the sets", func() {
 				Expect(set.Contains("first")).To(BeTrue())
-				Expect(set.Contains("second")).To(BeTrue())
 			})
 
 			It("returns false if the set is not contained", func() {

@@ -113,7 +113,8 @@ func (s *Set[T]) Add(item T) bool {
 func (s *Set[T]) AddSet(other *Set[T]) bool {
 	var changed bool
 	for item := range other.items {
-		changed = changed || s.Add(item)
+		// NOTE: OR order is important.
+		changed = s.Add(item) || changed
 	}
 	return changed
 }
@@ -135,7 +136,8 @@ func (s *Set[T]) Remove(item T) bool {
 func (s *Set[T]) RemoveSet(other *Set[T]) bool {
 	var changed bool
 	for item := range other.items {
-		changed = changed || s.Remove(item)
+		// NOTE: OR order is important.
+		changed = s.Remove(item) || changed
 	}
 	return changed
 }
