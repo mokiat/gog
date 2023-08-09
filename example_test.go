@@ -186,8 +186,15 @@ func ExampleEntries() {
 		"odd":  {1, 3, 5},
 	}
 	target := gog.Entries(source)
-	slices.SortFunc(target, func(first, second gog.KV[string, []int]) bool {
-		return first.Key < second.Key
+	slices.SortFunc(target, func(first, second gog.KV[string, []int]) int {
+		switch {
+		case first.Key < second.Key:
+			return -1
+		case first.Key > second.Key:
+			return 1
+		default:
+			return 0
+		}
 	})
 	fmt.Printf("%+v\n", target)
 
