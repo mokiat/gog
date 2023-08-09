@@ -201,3 +201,34 @@ func ExampleEntries() {
 	// Output:
 	// [{Key:even Value:[2 4 6]} {Key:odd Value:[1 3 5]}]
 }
+
+func ExampleConcat() {
+	first := []int{1, 2}
+	second := []int{3, 4}
+	result := gog.Concat(first, second)
+	fmt.Printf("%#v\n", result)
+
+	// Output:
+	// []int{1, 2, 3, 4}
+}
+
+func ExampleMerge() {
+	first := map[int]string{
+		1: "odd",
+		2: "even",
+	}
+	second := map[int]string{
+		1:     "small",
+		10000: "large",
+	}
+	result := gog.Merge(first, second)
+
+	fmt.Printf("1: %#v\n", result[1])
+	fmt.Printf("2: %#v\n", result[2])
+	fmt.Printf("10000: %#v\n", result[10000])
+
+	// Output:
+	// 1: "small"
+	// 2: "even"
+	// 10000: "large"
+}

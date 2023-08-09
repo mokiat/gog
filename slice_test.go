@@ -238,4 +238,46 @@ var _ = Describe("Slice", func() {
 			Expect(valueSlice).To(ConsistOf(first, second, third))
 		})
 	})
+
+	Describe("Concat", func() {
+		It("returns a concatenation of slices", func() {
+			first := []int{1, 2, 3}
+			second := []int{4}
+			third := []int{5, 6, 7}
+			result := gog.Concat(first, second, third)
+			Expect(result).To(Equal([]int{1, 2, 3, 4, 5, 6, 7}))
+			Expect(result).To(HaveCap(7))
+		})
+
+		It("returns an empty slice when called without args", func() {
+			result := gog.Concat[int]()
+			Expect(result).To(Equal([]int{}))
+		})
+	})
+
+	Describe("Merge", func() {
+		It("returns the combination of maps", func() {
+			first := map[int]string{
+				1: "one",
+				2: "two",
+				3: "three",
+			}
+			second := map[int]string{
+				1: "first",
+				4: "fourth",
+			}
+			result := gog.Merge(first, second)
+			Expect(result).To(Equal(map[int]string{
+				1: "first",
+				2: "two",
+				3: "three",
+				4: "fourth",
+			}))
+		})
+
+		It("returns an empty map when called without args", func() {
+			result := gog.Merge[int, string]()
+			Expect(result).To(Equal(map[int]string{}))
+		})
+	})
 })
