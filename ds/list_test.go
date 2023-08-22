@@ -28,6 +28,11 @@ var _ = Describe("List", func() {
 		Expect(list.Items()).To(BeEmpty())
 	})
 
+	It("equals an empty list", func() {
+		other := ds.NewList[string](0)
+		Expect(list.Equals(other)).To(BeTrue())
+	})
+
 	When("items are added", func() {
 		BeforeEach(func() {
 			list.Add("first")
@@ -49,7 +54,25 @@ var _ = Describe("List", func() {
 			Expect(list.Get(2)).To(Equal("third"))
 		})
 
+		It("is possible to unbox the list", func() {
+			items := list.Unbox()
+			Expect(items).To(Equal([]string{
+				"first", "second", "third",
+			}))
+
+			items[0] = "modified"
+			Expect(list.Items()).To(Equal([]string{
+				"modified", "second", "third",
+			}))
+		})
+
 		It("is possible to get all items", func() {
+			items := list.Items()
+			Expect(items).To(Equal([]string{
+				"first", "second", "third",
+			}))
+
+			items[0] = "modified"
 			Expect(list.Items()).To(Equal([]string{
 				"first", "second", "third",
 			}))
@@ -77,6 +100,36 @@ var _ = Describe("List", func() {
 			Expect(seen).To(Equal([]string{
 				"first", "second", "third",
 			}))
+		})
+
+		It("equals another list with same items", func() {
+			other := ds.ListFromSlice([]string{"first", "second", "third"})
+			Expect(list.Equals(other)).To(BeTrue())
+		})
+
+		It("does not equal another list with reordered items", func() {
+			other := ds.ListFromSlice([]string{"second", "first", "third"})
+			Expect(list.Equals(other)).To(BeFalse())
+		})
+
+		It("does not equal another list with more items", func() {
+			other := ds.ListFromSlice([]string{"first", "second", "third", "fourth"})
+			Expect(list.Equals(other)).To(BeFalse())
+		})
+
+		It("does not equal another list with fewer items", func() {
+			other := ds.ListFromSlice([]string{"first", "second"})
+			Expect(list.Equals(other)).To(BeFalse())
+		})
+
+		When("an item is overwritten", func() {
+			BeforeEach(func() {
+				list.Set(1, "modified")
+			})
+
+			It("is reflected in the items", func() {
+				Expect(list.Items()).To(Equal([]string{"first", "modified", "third"}))
+			})
 		})
 
 		When("the list is clipped", func() {
@@ -122,6 +175,33 @@ var _ = Describe("List", func() {
 				Expect(list.Items()).To(Equal([]string{
 					"first", "third",
 				}))
+			})
+		})
+	})
+
+	When("constructed from a slice", func() {
+		BeforeEach(func() {
+			list = ds.ListFromSlice([]string{"a", "b", "c"})
+		})
+
+		It("has the correct size", func() {
+			Expect(list.Size()).To(Equal(3))
+		})
+
+		It("contains the elements of the slice", func() {
+			Expect(list.Items()).To(Equal([]string{
+				"a", "b", "c",
+			}))
+		})
+
+		When("the slice is nil", func() {
+			BeforeEach(func() {
+				var slice []string
+				list = ds.ListFromSlice(slice)
+			})
+
+			It("is empty", func() {
+				Expect(list.IsEmpty()).To(BeTrue())
 			})
 		})
 	})

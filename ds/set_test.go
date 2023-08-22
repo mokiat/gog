@@ -28,6 +28,11 @@ var _ = Describe("Set", func() {
 		Expect(set.Items()).To(BeEmpty())
 	})
 
+	It("equals an empty set", func() {
+		other := ds.NewSet[string](0)
+		Expect(set.Equals(other)).To(BeTrue())
+	})
+
 	When("items are added", func() {
 		BeforeEach(func() {
 			set.Add("first")
@@ -41,6 +46,21 @@ var _ = Describe("Set", func() {
 
 		It("has the correct size", func() {
 			Expect(set.Size()).To(Equal(3))
+		})
+
+		It("is possible to unbox the set", func() {
+			items := set.Unbox()
+			Expect(items).To(Equal(map[string]struct{}{
+				"first":  {},
+				"second": {},
+				"third":  {},
+			}))
+
+			delete(items, "first")
+			Expect(set.Unbox()).To(Equal(map[string]struct{}{
+				"second": {},
+				"third":  {},
+			}))
 		})
 
 		It("is possible to get all items", func() {
@@ -72,6 +92,21 @@ var _ = Describe("Set", func() {
 
 		It("ignores remove operations on missing items", func() {
 			Expect(set.Remove("missing")).To(BeFalse())
+		})
+
+		It("equals another set with same items", func() {
+			other := ds.SetFromSlice([]string{"first", "second", "third"})
+			Expect(set.Equals(other)).To(BeTrue())
+		})
+
+		It("does not equal another set with additional items", func() {
+			other := ds.SetFromSlice([]string{"first", "second", "third", "extra"})
+			Expect(set.Equals(other)).To(BeFalse())
+		})
+
+		It("does not equal another set with insufficient items", func() {
+			other := ds.SetFromSlice([]string{"first", "third"})
+			Expect(set.Equals(other)).To(BeFalse())
 		})
 
 		When("clipped", func() {
