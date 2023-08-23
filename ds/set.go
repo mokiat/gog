@@ -158,6 +158,17 @@ func (s *Set[T]) ContainsSet(other *Set[T]) bool {
 	return true
 }
 
+// Unbox provides direct access to the inner representation of the set.
+// The returned map should not be modified, otherwise there is a risk that
+// the Set might not work correctly afterwards. Even if it works now, a future
+// version might break that behavior.
+//
+// This method should only be used when performance is critical and memory
+// allocation is not desired.
+func (s *Set[T]) Unbox() map[T]struct{} {
+	return s.items
+}
+
 // Items returns a slice containing all of the items from this Set.
 //
 // Note: The items are returned in a random order which can differ
@@ -168,6 +179,11 @@ func (s *Set[T]) Items() []T {
 		result = append(result, v)
 	}
 	return result
+}
+
+// Equals return whether this set is equal to the provided set.
+func (s *Set[T]) Equals(other *Set[T]) bool {
+	return maps.Equal(s.items, other.items)
 }
 
 // Clear removes all items from this Set.

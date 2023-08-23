@@ -9,6 +9,17 @@ func NewList[T comparable](initialCapacity int) *List[T] {
 	return &List[T]{}
 }
 
+// ListFromSlice constructs a new List that is based on the items from the
+// specified slice.
+//
+// It is safe to modify the slice afterwards, as the list creates its own
+// internal copy.
+func ListFromSlice[T comparable](items []T) *List[T] {
+	return &List[T]{
+		items: slices.Clone(items),
+	}
+}
+
 // List represents a sequence of items.
 //
 // Currently a List can only store comparable items. This restriction
@@ -44,15 +55,37 @@ func (l *List[T]) Remove(item T) bool {
 }
 
 // Get returns the item in this list that is located at the specified index
-// (starting from zero). This method will panic if the index is invalid.
+// (starting from zero).
+//
+// This method will panic if the index is outside the list bounds.
 func (l *List[T]) Get(index int) T {
 	return l.items[index]
 }
 
-// Item returns all items stored in this List as a slice. The returned
-// slice should not be mutated.
+// Set modifies the item at the specified index.
+//
+// This method will panic if the index is outside the list bounds.
+func (l *List[T]) Set(index int, value T) {
+	l.items[index] = value
+}
+
+// Unbox provides direct access to the inner representation of the list.
+// The returned slice should not be modified, otherwise there is a risk that
+// the List might not work correctly afterwards. Even if it works now, a future
+// version might break that behavior.
+//
+// This method should only be used when performance is critical and memory
+// allocation is not desired.
+func (l *List[T]) Unbox() []T {
+	return l.items
+}
+
+// Items returns all items stored in this List as a slice. It is safe to mutate
+// the returned slice as it is a copy of the inner representation.
+//
+// If performance is needed, consider using Unbox method instead.
 func (l *List[T]) Items() []T {
-	return l.items[0:len(l.items):len(l.items)]
+	return slices.Clone(l.items)
 }
 
 // Contains checks whether this List has the specified item and returns true
@@ -73,6 +106,11 @@ func (l *List[T]) Each(iterator func(item T)) {
 	for _, item := range l.items {
 		iterator(item)
 	}
+}
+
+// Equals returns whether this list matches exactly the provided list.
+func (l *List[T]) Equals(other *List[T]) bool {
+	return slices.Equal(l.items, other.items)
 }
 
 // Clear removes all items from this List.
