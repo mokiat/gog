@@ -1,10 +1,6 @@
 package gog
 
-import (
-	"slices"
-
-	"golang.org/x/exp/maps"
-)
+import "golang.org/x/exp/maps"
 
 // Map can be used to transform one slice into another by providing a
 // function to do the mapping.
@@ -154,10 +150,17 @@ func DerefElements[T any](slice []*T) []T {
 //
 // This function always allocates a brand new slice with appropriate
 // capacity and never mutates any of the passed slices.
-//
-// Deprecated: Use slices.Concat instead.
-func Concat[T any](subSlices ...[]T) []T {
-	return slices.Concat(subSlices...)
+func Concat[T any](slices ...[]T) []T {
+	capacity := 0
+	for _, slice := range slices {
+		capacity += len(slice)
+	}
+
+	result := make([]T, 0, capacity)
+	for _, slice := range slices {
+		result = append(result, slice...)
+	}
+	return result
 }
 
 // Merge takes a series of maps and merges them into a single map.
