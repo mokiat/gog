@@ -15,6 +15,19 @@ func Map[S, T any](slice []S, fn func(S) T) []T {
 	return result
 }
 
+// MapIndex is similar to Map, except that it passes the element index
+// to the closure function as well.
+func MapIndex[S, T any](slice []S, fn func(int, S) T) []T {
+	if slice == nil {
+		return nil
+	}
+	result := make([]T, len(slice))
+	for i, v := range slice {
+		result[i] = fn(i, v)
+	}
+	return result
+}
+
 // Reduce compacts a slice into a single value. The provided function is used
 // to perform the reduction starting with the initialValue.
 func Reduce[S, T any](slice []S, initialValue T, fn func(accum T, value S) T) T {
@@ -98,6 +111,14 @@ func Mutate[T any](slice []T, fn func(e *T)) {
 	}
 }
 
+// MutateIndex is similar to Mutate, except that it passes the element index
+// to the closure function as well.
+func MutateIndex[T any](slice []T, fn func(index int, e *T)) {
+	for i := range slice {
+		fn(i, &slice[i])
+	}
+}
+
 // FindFunc iterates over the slice and uses the provided closure function
 // to check whether the elements match a user-provided condition. The first
 // value that matches is returned as well as a true flag. Otherwise a
@@ -150,6 +171,8 @@ func DerefElements[T any](slice []*T) []T {
 //
 // This function always allocates a brand new slice with appropriate
 // capacity and never mutates any of the passed slices.
+//
+// Deprecated: Use built-in slices.Concat instead.
 func Concat[T any](slices ...[]T) []T {
 	capacity := 0
 	for _, slice := range slices {

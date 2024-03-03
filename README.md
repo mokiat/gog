@@ -1,15 +1,17 @@
 # GoG (Go Generics)
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/mokiat/gog.svg)](https://pkg.go.dev/github.com/mokiat/gog)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mokiat/gog)](https://goreportcard.com/report/github.com/mokiat/gog)
+
 GoG is a Go library with useful generic functions and types.
 
 Since the introduction of generics in Go 1.18, a number of useful and reusable
 data structures, algorithms and utility functions are now possible. This library
 attempts to cover some of the most common use cases.
 
-It does not include functions that are already provided by
-[x/exp/slices](https://pkg.go.dev/golang.org/x/exp/slices) and
-[x/exp/maps](https://pkg.go.dev/golang.org/x/exp/maps), both of which might
-soon be part of the built-in packages.
+It avoids duplicating functions that are already provided by
+[slices](https://pkg.go.dev/slices) and
+[maps](https://pkg.go.dev/maps).
 
 For a complete list on available functions and types, check the
 godoc documentation for this project:
