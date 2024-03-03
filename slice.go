@@ -150,6 +150,8 @@ func DerefElements[T any](slice []*T) []T {
 //
 // This function always allocates a brand new slice with appropriate
 // capacity and never mutates any of the passed slices.
+//
+// Deprecated: Use built-in slices.Concat instead.
 func Concat[T any](slices ...[]T) []T {
 	capacity := 0
 	for _, slice := range slices {
