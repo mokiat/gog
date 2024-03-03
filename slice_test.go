@@ -29,6 +29,24 @@ var _ = Describe("Slice", func() {
 		})
 	})
 
+	Describe("MapIndex", func() {
+		mapFunc := func(index, v int) string {
+			return strconv.Itoa(v * index)
+		}
+
+		It("converts from one slice type to another", func() {
+			source := []int{1, 2, 3}
+			target := gog.MapIndex(source, mapFunc)
+			Expect(target).To(Equal([]string{
+				"0", "2", "6",
+			}))
+		})
+
+		It("preserves the nil slice", func() {
+			Expect(gog.MapIndex(nil, mapFunc)).To(Equal([]string(nil)))
+		})
+	})
+
 	Describe("Reduce", func() {
 		It("reduces a slice to a single value", func() {
 			source := []int{1, 2, 3}
@@ -140,6 +158,30 @@ var _ = Describe("Slice", func() {
 		It("ignores nil slices", func() {
 			var slice []int
 			gog.Mutate(slice, double)
+			Expect(slice).To(Equal([]int(nil)))
+		})
+	})
+
+	Describe("MutateIndex", func() {
+		timesIndex := func(index int, v *int) {
+			*v *= index
+		}
+
+		It("mutates the items of a slice", func() {
+			slice := []int{1, 2, 3, 4}
+			gog.MutateIndex(slice, timesIndex)
+			Expect(slice).To(Equal([]int{0, 2, 6, 12}))
+		})
+
+		It("ignores empty slices", func() {
+			slice := []int{}
+			gog.MutateIndex(slice, timesIndex)
+			Expect(slice).To(Equal([]int{}))
+		})
+
+		It("ignores nil slices", func() {
+			var slice []int
+			gog.MutateIndex(slice, timesIndex)
 			Expect(slice).To(Equal([]int(nil)))
 		})
 	})
