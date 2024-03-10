@@ -32,6 +32,13 @@ var _ = Describe("Optional", func() {
 		Expect(v.Value).To(Equal(actual))
 	})
 
+	It("is possible to get a fallback value", func() {
+		v := opt.Unspecified[string]()
+		Expect(v.ValueOrDefault("fallback")).To(Equal("fallback"))
+		v = opt.V("hello")
+		Expect(v.ValueOrDefault("fallback")).To(Equal("hello"))
+	})
+
 	It("is possible to get a pointer representation of an unspecified value", func() {
 		v := opt.Unspecified[string]()
 		ptr := v.ToPtr()
