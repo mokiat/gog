@@ -10,6 +10,15 @@ type T[D any] struct {
 	Value D
 }
 
+// ValueOrDefault returns the value held in this optional if it is specified,
+// otherwise it returns the given fallback value.
+func (t T[D]) ValueOrDefault(fallback D) D {
+	if t.Specified {
+		return t.Value
+	}
+	return fallback
+}
+
 // ToPtr returns a pointer-based representation of the value held
 // in this optional. If this optional is not specified, then nil
 // is returned.
