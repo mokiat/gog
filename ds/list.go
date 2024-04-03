@@ -1,6 +1,6 @@
 package ds
 
-import "golang.org/x/exp/slices"
+import "slices"
 
 // NewList creates a new List with the given capacity. The capacity can be
 // used as a form of optimization. Regardless of the value, the initial size

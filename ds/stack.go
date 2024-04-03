@@ -1,6 +1,6 @@
 package ds
 
-import "golang.org/x/exp/slices"
+import "slices"
 
 // NewStack creates a new Stack instance with the specified initial capacity,
 // which only serves to preallocate memory. Exceeding the initial capacity is

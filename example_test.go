@@ -2,11 +2,11 @@ package gog_test
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 
 	"github.com/mokiat/gog"
-	"golang.org/x/exp/slices"
 )
 
 func ExampleDedupe() {
