@@ -1,6 +1,6 @@
 package ds
 
-import "golang.org/x/exp/maps"
+import "maps"
 
 // NewSet creates a new Set instance with the specified initial capacity,
 // which is only used to preallocate memory and does not act as an upper bound.

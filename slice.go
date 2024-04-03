@@ -1,6 +1,6 @@
 package gog
 
-import "golang.org/x/exp/maps"
+import "maps"
 
 // Map can be used to transform one slice into another by providing a
 // function to do the mapping.

@@ -1,6 +1,6 @@
 package ds
 
-import "golang.org/x/exp/slices"
+import "slices"
 
 // NewHeap creates a new Heap instance that is configured to use the
 // specified better function to order items. When better returns true, the
