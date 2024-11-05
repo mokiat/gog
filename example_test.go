@@ -1,6 +1,7 @@
 package gog_test
 
 import (
+	"cmp"
 	"fmt"
 	"slices"
 	"strconv"
@@ -187,14 +188,7 @@ func ExampleEntries() {
 	}
 	target := gog.Entries(source)
 	slices.SortFunc(target, func(first, second gog.KV[string, []int]) int {
-		switch {
-		case first.Key < second.Key:
-			return -1
-		case first.Key > second.Key:
-			return 1
-		default:
-			return 0
-		}
+		return cmp.Compare(first.Key, second.Key)
 	})
 	fmt.Printf("%+v\n", target)
 
