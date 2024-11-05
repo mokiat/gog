@@ -2,6 +2,11 @@ package seq
 
 import "iter"
 
+// None returns an empty sequence.
+func None[T any]() iter.Seq[T] {
+	return func(yield func(T) bool) {}
+}
+
 // Times returns a sequence of integers from 0 to count.
 func Times(count int) iter.Seq[int] {
 	return func(yield func(int) bool) {

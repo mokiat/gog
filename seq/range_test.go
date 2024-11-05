@@ -11,6 +11,14 @@ import (
 
 var _ = Describe("Range", func() {
 
+	Describe("None", func() {
+		It("yields no values", func() {
+			iter := seq.None[int]()
+			result := slices.Collect(iter)
+			Expect(result).To(BeEmpty())
+		})
+	})
+
 	Describe("Times", func() {
 		It("yields the correct sequence of numbers", func() {
 			iter := seq.Times(3)
