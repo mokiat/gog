@@ -226,3 +226,12 @@ func ExampleMerge() {
 	// 2: "even"
 	// 10000: "large"
 }
+
+func ExampleSum() {
+	source := []int{1, 2, 3}
+	target := gog.Sum(source)
+	fmt.Println(target)
+
+	// Output:
+	// 6
+}

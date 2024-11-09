@@ -1,6 +1,10 @@
 package gog
 
-import "maps"
+import (
+	"maps"
+
+	"github.com/mokiat/gog/constr"
+)
 
 // Map can be used to transform one slice into another by providing a
 // function to do the mapping.
@@ -198,6 +202,19 @@ func Merge[K comparable, V any](ms ...map[K]V) map[K]V {
 	result := make(map[K]V, capacity)
 	for _, m := range ms {
 		maps.Copy(result, m)
+	}
+	return result
+}
+
+// Sum is a convenience function that calculates the sum of all elements in the
+// source slice.
+//
+// The same can normally be achieved with the Reduce function, but this function
+// is simpler to use and faster.
+func Sum[T constr.Numeric](src []T) T {
+	var result T
+	for _, v := range src {
+		result += v
 	}
 	return result
 }

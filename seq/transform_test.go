@@ -88,4 +88,30 @@ var _ = Describe("Transform", func() {
 			}))
 		})
 	})
+
+	Describe("Reduce", func() {
+		It("reduces a sequence to a single value", func() {
+			source := slices.Values([]int{1, 2, 3})
+			result := seq.Reduce(source, ">", func(accum string, value int) string {
+				return accum + strconv.Itoa(value)
+			})
+			Expect(result).To(Equal(">123"))
+		})
+	})
+
+	Describe("Sum", func() {
+		type IntWrapper int
+
+		It("calculates the sum of the sequence", func() {
+			source := slices.Values([]IntWrapper{0, 1, 2, 3})
+			result := seq.Sum(source)
+			Expect(result).To(Equal(IntWrapper(6)))
+		})
+
+		It("returns the zero value for empty sequence", func() {
+			source := slices.Values([]int{})
+			result := seq.Sum(source)
+			Expect(result).To(Equal(0))
+		})
+	})
 })
