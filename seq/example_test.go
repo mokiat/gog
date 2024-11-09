@@ -2,6 +2,7 @@ package seq_test
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/mokiat/gog/seq"
 )
@@ -80,4 +81,38 @@ func ExampleBatchSlice() {
 	// []string{"1Hello", "1World"}
 	// []string{"2This", "2Is", "2Longer"}
 	// []string{"3Yes"}
+}
+
+func ExampleSelect() {
+	source := slices.Values([]int{1, 2, 3, 4, 5})
+	target := seq.Select(source, func(v int) bool {
+		return v%2 == 0
+	})
+	for v := range target {
+		fmt.Println(v)
+	}
+
+	// Output:
+	// 2
+	// 4
+}
+
+func ExampleReduce() {
+	source := slices.Values([]int{1, 2, 3})
+	result := seq.Reduce(source, 10, func(acc, v int) int {
+		return acc + v
+	})
+	fmt.Println(result)
+
+	// Output:
+	// 16
+}
+
+func ExampleSum() {
+	source := slices.Values([]int{1, 2, 3})
+	result := seq.Sum(source)
+	fmt.Println(result)
+
+	// Output:
+	// 6
 }

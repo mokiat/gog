@@ -322,4 +322,20 @@ var _ = Describe("Slice", func() {
 			Expect(result).To(Equal(map[int]string{}))
 		})
 	})
+
+	Describe("Sum", func() {
+		type IntWrapper int
+
+		It("calculates the sum of the slice", func() {
+			source := []IntWrapper{0, 1, 2, 3}
+			result := gog.Sum(source)
+			Expect(result).To(Equal(IntWrapper(6)))
+		})
+
+		It("returns the zero value for empty slices", func() {
+			source := []int{}
+			result := gog.Sum(source)
+			Expect(result).To(Equal(0))
+		})
+	})
 })

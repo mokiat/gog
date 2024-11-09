@@ -1,6 +1,10 @@
 package seq
 
-import "iter"
+import (
+	"iter"
+
+	"github.com/mokiat/gog/constr"
+)
 
 // Map applies the given transformation function to each element of the source
 // sequence and returns a new sequence with the results.
@@ -64,4 +68,27 @@ func BatchSliceFast[T any](items []T, eqFunc func(items []T, i, j int) bool, max
 			}
 		}
 	}
+}
+
+// Reduce compacts a sequence into a single value. The provided function is used
+// to perform the reduction starting with the initialValue.
+func Reduce[T any, S any](src iter.Seq[S], initialValue T, fn func(accum T, valye S) T) T {
+	accum := initialValue
+	for v := range src {
+		accum = fn(accum, v)
+	}
+	return accum
+}
+
+// Sum is a convenience function that calculates the sum of all elements in the
+// source sequence.
+//
+// The same can normally be achieved with the Reduce function, but this function
+// is simpler to use and faster.
+func Sum[T constr.Numeric](src iter.Seq[T]) T {
+	var result T
+	for v := range src {
+		result += v
+	}
+	return result
 }
