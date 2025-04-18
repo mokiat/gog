@@ -235,3 +235,15 @@ func ExampleSum() {
 	// Output:
 	// 6
 }
+
+func ExampleMust() {
+	fn := func() (int, error) {
+		return 42, nil
+	}
+
+	result := gog.Must(fn())
+	fmt.Println(result)
+
+	// Output:
+	// 42
+}
