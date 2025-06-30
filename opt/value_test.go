@@ -20,6 +20,22 @@ var _ = Describe("Optional", func() {
 		Expect(v.Value).To(Equal("hello"))
 	})
 
+	It("is possible to unwrap an optional", func() {
+		v := opt.V("hello")
+		str, ok := v.Unwrap()
+		Expect(ok).To(BeTrue())
+		Expect(str).To(Equal("hello"))
+	})
+
+	It("is possible to wrap to an optional", func() {
+		fn := func() (string, bool) {
+			return "hello", true
+		}
+		v := opt.Wrap(fn())
+		Expect(v.Value).To(Equal("hello"))
+		Expect(v.Specified).To(BeTrue())
+	})
+
 	It("is possible to create an unspecified value from pointer", func() {
 		v := opt.FromPtr[int](nil)
 		Expect(v.Specified).To(BeFalse())

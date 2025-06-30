@@ -10,6 +10,12 @@ type T[D any] struct {
 	Value D
 }
 
+// Unwrap is a convenience method that returns this optional in the standard
+// Go tuple construct of (value, bool).
+func (t T[D]) Unwrap() (D, bool) {
+	return t.Value, t.Specified
+}
+
 // ValueOrDefault returns the value held in this optional if it is specified,
 // otherwise it returns the given fallback value.
 func (t T[D]) ValueOrDefault(fallback D) D {
@@ -53,4 +59,15 @@ func FromPtr[D any](value *D) T[D] {
 		result.Value = *value
 	}
 	return result
+}
+
+// Wrap creates an optional from the standard Go tuple (value, bool).
+//
+// This can be useful if a function returns such a tuple and one wants to
+// quickly convert it into an optional.
+func Wrap[D any](value D, specified bool) T[D] {
+	return T[D]{
+		Value:     value,
+		Specified: specified,
+	}
 }
