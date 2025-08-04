@@ -42,6 +42,18 @@ var _ = Describe("Func", func() {
 		})
 	})
 
+	Describe("OneOf", func() {
+		It("returns true on matching value", func() {
+			fltr := filter.OneOf("a", "b", "c")
+			Expect(fltr("b")).To(BeTrue())
+		})
+
+		It("returns false on non-matching value", func() {
+			fltr := filter.OneOf("a", "b", "c")
+			Expect(fltr("z")).To(BeFalse())
+		})
+	})
+
 	Describe("Or", func() {
 		It("returns true if the input value matches one of the conditions", func() {
 			fltr := filter.Or(filter.Equal("a"), filter.Equal("b"))

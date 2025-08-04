@@ -1,5 +1,7 @@
 package filter
 
+import "slices"
+
 // Func represents a filtering function. The actual semantics of the Func
 // depend on the user but in general if true is returned then the value
 // that is being checked is accepted.
@@ -34,6 +36,14 @@ func Not[T any](delegate Func[T]) Func[T] {
 func Equal[T comparable](expected T) Func[T] {
 	return func(item T) bool {
 		return item == expected
+	}
+}
+
+// OneOf returns a filter that returns true only if the input value matches
+// one of the specified values.
+func OneOf[T comparable](expected ...T) Func[T] {
+	return func(item T) bool {
+		return slices.Contains(expected, item)
 	}
 }
 
