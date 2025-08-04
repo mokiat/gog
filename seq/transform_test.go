@@ -1,6 +1,7 @@
 package seq_test
 
 import (
+	"maps"
 	"slices"
 	"strconv"
 
@@ -112,6 +113,19 @@ var _ = Describe("Transform", func() {
 			source := slices.Values([]int{})
 			result := seq.Sum(source)
 			Expect(result).To(Equal(0))
+		})
+	})
+
+	Describe("Indexed", func() {
+		It("assigns indices to the sequence", func() {
+			source := slices.Values([]string{"a", "b", "c"})
+			result := seq.Indexed(source)
+			items := maps.Collect(result)
+			Expect(items).To(Equal(map[int]string{
+				0: "a",
+				1: "b",
+				2: "c",
+			}))
 		})
 	})
 })

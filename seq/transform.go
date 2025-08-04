@@ -92,3 +92,17 @@ func Sum[T constr.Numeric](src iter.Seq[T]) T {
 	}
 	return result
 }
+
+// Indexed returns a new key-value pair iterator from a value iterator, where
+// it assigns indices as keys to each value.
+func Indexed[T any](src iter.Seq[T]) iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		index := 0
+		for item := range src {
+			if !yield(index, item) {
+				return
+			}
+			index++
+		}
+	}
+}
