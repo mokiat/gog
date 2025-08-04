@@ -20,7 +20,7 @@ func Map[T any, S any](src iter.Seq[S], fn func(S) T) iter.Seq[T] {
 
 // BatchSlice groups the elements of the source sequence into batches with the
 // same key, as determined by the key function. In order for this function to
-// work best, it is assumed that items are already sorted acoording to the key
+// work best, it is assumed that items are already sorted according to the key
 // function.
 //
 // The maxSize parameter can be used to limit the size of the batches. If the
@@ -72,7 +72,7 @@ func BatchSliceFast[T any](items []T, eqFunc func(items []T, i, j int) bool, max
 
 // Reduce compacts a sequence into a single value. The provided function is used
 // to perform the reduction starting with the initialValue.
-func Reduce[T any, S any](src iter.Seq[S], initialValue T, fn func(accum T, valye S) T) T {
+func Reduce[T any, S any](src iter.Seq[S], initialValue T, fn func(accum T, value S) T) T {
 	accum := initialValue
 	for v := range src {
 		accum = fn(accum, v)
@@ -91,4 +91,18 @@ func Sum[T constr.Numeric](src iter.Seq[T]) T {
 		result += v
 	}
 	return result
+}
+
+// Indexed returns a new key-value pair iterator from a value iterator, where
+// it assigns indices as keys to each value.
+func Indexed[T any](src iter.Seq[T]) iter.Seq2[int, T] {
+	return func(yield func(int, T) bool) {
+		index := 0
+		for item := range src {
+			if !yield(index, item) {
+				return
+			}
+			index++
+		}
+	}
 }
