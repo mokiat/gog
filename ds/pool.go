@@ -7,7 +7,7 @@ func NewPool[T any]() *Pool[T] {
 	}
 }
 
-// Pool represents a storage structure that can preseve allocated objects
+// Pool represents a storage structure that can preserve allocated objects
 // for faster reuse.
 type Pool[T any] struct {
 	items *Stack[*T]

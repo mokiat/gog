@@ -98,7 +98,7 @@ func (s *Set[T]) Size() int {
 
 // Add adds the specified item to this Set if it was not present already.
 // This method returns true if the operation was performed and false if
-// the item was aleady present.
+// the item was already present.
 func (s *Set[T]) Add(item T) bool {
 	if s.Contains(item) {
 		return false
