@@ -338,4 +338,16 @@ var _ = Describe("Slice", func() {
 			Expect(result).To(Equal(0))
 		})
 	})
+
+	Describe("IsOneOf", func() {
+		It("returns true if the element is in the slice", func() {
+			Expect(gog.IsOneOf(3, 1, 2, 3, 4, 5)).To(BeTrue())
+			Expect(gog.IsOneOf("test", "hello", "test", "world")).To(BeTrue())
+		})
+
+		It("returns false if the element is not in the slice", func() {
+			Expect(gog.IsOneOf(42, 1, 2, 3, 4, 5)).To(BeFalse())
+			Expect(gog.IsOneOf("missing", "hello", "test", "world")).To(BeFalse())
+		})
+	})
 })

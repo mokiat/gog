@@ -218,3 +218,14 @@ func Sum[T constr.Numeric](src []T) T {
 	}
 	return result
 }
+
+// IsOneOf checks whether the specified value is equal to one of the
+// provided candidates.
+func IsOneOf[T comparable](value T, candidates ...T) bool {
+	for _, candidate := range candidates {
+		if value == candidate {
+			return true
+		}
+	}
+	return false
+}
