@@ -21,7 +21,7 @@ func BenchmarkBatchSlice(b *testing.B) {
 
 	b.ResetTimer()
 
-	for range b.N {
+	for b.Loop() {
 		iter := seq.BatchSlice(source, func(a, b largeStruct) bool {
 			return a.key == b.key
 		}, 0)
@@ -45,7 +45,7 @@ func BenchmarkBatchSliceFast(b *testing.B) {
 
 	b.ResetTimer()
 
-	for range b.N {
+	for b.Loop() {
 		iter := seq.BatchSliceFast(source, func(items []largeStruct, i, j int) bool {
 			a := &items[i]
 			b := &items[j]
