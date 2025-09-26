@@ -15,3 +15,15 @@ func Must[T any](v T, err error) T {
 	}
 	return v
 }
+
+// Ternary is a generic ternary operator. It returns trueValue if condition is
+// true, and falseValue otherwise.
+//
+// While it can greatly reduce boilerplate code, it should be used sparingly to
+// avoid reducing code readability (e.g. avoid nesting Ternary calls).
+func Ternary[T any](condition bool, trueValue T, falseValue T) T {
+	if condition {
+		return trueValue
+	}
+	return falseValue
+}

@@ -46,4 +46,14 @@ var _ = Describe("Value", func() {
 			})
 		})
 	})
+
+	Describe("Ternary", func() {
+		It("returns the true value when the condition is true", func() {
+			Expect(gog.Ternary(true, "true", "false")).To(Equal("true"))
+		})
+
+		It("returns the false value when the condition is false", func() {
+			Expect(gog.Ternary(false, "true", "false")).To(Equal("false"))
+		})
+	})
 })
