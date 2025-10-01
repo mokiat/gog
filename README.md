@@ -18,8 +18,8 @@ godoc documentation for this project:
 
 - [gog](https://pkg.go.dev/github.com/mokiat/gog) - general utility functions
 - [gog/ds](https://pkg.go.dev/github.com/mokiat/gog/ds) - data structures
-- [gog/filter](https://pkg.go.dev/github.com/mokiat/gog) - data filtering
-- [gog/opt](https://pkg.go.dev/github.com/mokiat/gog) - optional fields and types
+- [gog/filter](https://pkg.go.dev/github.com/mokiat/gog/filter) - data filtering
+- [gog/opt](https://pkg.go.dev/github.com/mokiat/gog/opt) - optional fields and types
 
 
 ## Examples
