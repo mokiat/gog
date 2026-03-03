@@ -6,7 +6,9 @@ import "slices"
 // used as a form of optimization. Regardless of the value, the initial size
 // of the list is zero and the list can grow past the specified capacity.
 func NewList[T comparable](initialCapacity int) *List[T] {
-	return &List[T]{}
+	return &List[T]{
+		items: make([]T, 0, initialCapacity),
+	}
 }
 
 // ListFromSlice constructs a new List that is based on the items from the
@@ -100,8 +102,8 @@ func (l *List[T]) IndexOf(item T) int {
 	return slices.Index(l.items, item)
 }
 
-// Each is a helper method allows one to iterate over all items in this List
-// through a closure function.
+// Each is a helper method that allows one to iterate over all items in this
+// List through a closure function.
 func (l *List[T]) Each(iterator func(item T)) {
 	for _, item := range l.items {
 		iterator(item)

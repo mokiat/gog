@@ -181,7 +181,7 @@ func (s *Set[T]) Items() []T {
 	return result
 }
 
-// Equals return whether this set is equal to the provided set.
+// Equals returns whether this set is equal to the provided set.
 func (s *Set[T]) Equals(other *Set[T]) bool {
 	return maps.Equal(s.items, other.items)
 }

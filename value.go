@@ -19,8 +19,18 @@ func Must[T any](v T, err error) T {
 // Ternary is a generic ternary operator. It returns trueValue if condition is
 // true, and falseValue otherwise.
 //
-// While it can greatly reduce boilerplate code, it should be used sparingly to
-// avoid reducing code readability (e.g. avoid nesting Ternary calls).
+// BEWARE: Unlike a traditional ternary operator, both trueValue and falseValue
+// are evaluated before the condition is checked. Using it in the following way
+// would be wrong (as it would cause a panic if a is nil):
+//
+//	Ternary(a != nil, a.Value(), 0)
+//
+// Instead, it is intended to simplify basic conditional assignments,
+// for example:
+//
+//	color := Ternary(element.IsSelected, "0xFFFFFF", "0x000000")
+//
+// While it can greatly reduce boilerplate code, it should be used with care.
 func Ternary[T any](condition bool, trueValue T, falseValue T) T {
 	if condition {
 		return trueValue
