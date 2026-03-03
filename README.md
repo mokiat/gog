@@ -13,13 +13,15 @@ It avoids duplicating functions that are already provided by
 [slices](https://pkg.go.dev/slices) and
 [maps](https://pkg.go.dev/maps).
 
-For a complete list on available functions and types, check the
+For a complete list of available functions and types, check the
 godoc documentation for this project:
 
 - [gog](https://pkg.go.dev/github.com/mokiat/gog) - general utility functions
+- [gog/constr](https://pkg.go.dev/github.com/mokiat/gog/constr) - type constraints
 - [gog/ds](https://pkg.go.dev/github.com/mokiat/gog/ds) - data structures
 - [gog/filter](https://pkg.go.dev/github.com/mokiat/gog/filter) - data filtering
 - [gog/opt](https://pkg.go.dev/github.com/mokiat/gog/opt) - optional fields and types
+- [gog/seq](https://pkg.go.dev/github.com/mokiat/gog/seq) - iterator utilities
 
 
 ## Examples

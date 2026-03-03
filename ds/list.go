@@ -100,8 +100,8 @@ func (l *List[T]) IndexOf(item T) int {
 	return slices.Index(l.items, item)
 }
 
-// Each is a helper method allows one to iterate over all items in this List
-// through a closure function.
+// Each is a helper method that allows one to iterate over all items in this
+// List through a closure function.
 func (l *List[T]) Each(iterator func(item T)) {
 	for _, item := range l.items {
 		iterator(item)
