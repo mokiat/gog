@@ -6,7 +6,9 @@ import "slices"
 // used as a form of optimization. Regardless of the value, the initial size
 // of the list is zero and the list can grow past the specified capacity.
 func NewList[T comparable](initialCapacity int) *List[T] {
-	return &List[T]{}
+	return &List[T]{
+		items: make([]T, 0, initialCapacity),
+	}
 }
 
 // ListFromSlice constructs a new List that is based on the items from the
