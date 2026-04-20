@@ -15,7 +15,7 @@ var _ = Describe("Pool", func() {
 	var pool *ds.Pool[Item]
 
 	BeforeEach(func() {
-		pool = ds.NewPool[Item]()
+		pool = ds.EmptyPool[Item]()
 	})
 
 	It("is initially empty", func() {

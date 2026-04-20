@@ -1,10 +1,29 @@
 package ds
 
-// NewPool creates a new Pool instance.
-func NewPool[T any]() *Pool[T] {
-	return &Pool[T]{
-		items: NewStack[*T](0),
+// EmptyPool creates a new Pool instance.
+func EmptyPool[T any]() *Pool[T] {
+	return PreallocatedPool[T](0)
+}
+
+// PreallocatedPool creates a new Pool instance with a preallocated capacity,
+// which is only used to preallocate memory and does not act as an upper bound.
+func PreallocatedPool[T any](initialCapacity int) *Pool[T] {
+	pool := &Pool[T]{
+		items: PreallocatedStack[*T](initialCapacity),
 	}
+	for range initialCapacity {
+		pool.items.Push(new(T))
+	}
+	return pool
+}
+
+// NewPool creates a new Pool instance.
+//
+// Deprecated: Use EmptyPool or PreallocatedPool instead.
+//
+//go:fix inline
+func NewPool[T any]() *Pool[T] {
+	return EmptyPool[T]()
 }
 
 // Pool represents a storage structure that can preserve allocated objects

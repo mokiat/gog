@@ -14,7 +14,7 @@ var _ = Describe("Heap", func() {
 		smallerInt := func(a, b int) bool {
 			return a < b
 		}
-		heap = ds.NewHeap(0, smallerInt)
+		heap = ds.EmptyHeap(smallerInt)
 	})
 
 	It("is empty by default", func() {

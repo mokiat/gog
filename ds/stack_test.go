@@ -13,7 +13,7 @@ var _ = Describe("Stack", func() {
 	)
 
 	BeforeEach(func() {
-		stack = ds.NewStack[string](0)
+		stack = ds.EmptyStack[string]()
 	})
 
 	It("is empty by default", func() {

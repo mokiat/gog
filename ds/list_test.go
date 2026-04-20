@@ -13,7 +13,7 @@ var _ = Describe("List", func() {
 	)
 
 	BeforeEach(func() {
-		list = ds.NewList[string](0)
+		list = ds.EmptyList[string]()
 	})
 
 	It("is empty by default", func() {
@@ -29,7 +29,7 @@ var _ = Describe("List", func() {
 	})
 
 	It("equals an empty list", func() {
-		other := ds.NewList[string](0)
+		other := ds.EmptyList[string]()
 		Expect(list.Equals(other)).To(BeTrue())
 	})
 
