@@ -85,8 +85,8 @@ func (h *Heap[T]) Clear() {
 }
 
 // Clip removes unused capacity from the Heap.
-func (s *Heap[T]) Clip() {
-	s.items = slices.Clip(s.items)
+func (h *Heap[T]) Clip() {
+	h.items = slices.Clip(h.items)
 }
 
 func (h *Heap[T]) siftUp(value T, index int) {
