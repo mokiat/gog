@@ -48,12 +48,8 @@ func OneOf[T comparable](expected ...T) Func[T] {
 }
 
 // Or returns true if any of the specified Func filters in the arguments
-// return true. If no filters are specified as arguments, then the
-// returned Func always returns true.
+// return true.
 func Or[T any](filters ...Func[T]) Func[T] {
-	if len(filters) == 0 {
-		return True[T]()
-	}
 	return func(item T) bool {
 		for _, filter := range filters {
 			if filter(item) {
