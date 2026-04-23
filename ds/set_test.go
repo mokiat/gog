@@ -13,7 +13,7 @@ var _ = Describe("Set", func() {
 	)
 
 	BeforeEach(func() {
-		set = ds.NewSet[string](0)
+		set = ds.EmptySet[string]()
 	})
 
 	It("is empty by default", func() {
@@ -29,7 +29,7 @@ var _ = Describe("Set", func() {
 	})
 
 	It("equals an empty set", func() {
-		other := ds.NewSet[string](0)
+		other := ds.EmptySet[string]()
 		Expect(set.Equals(other)).To(BeTrue())
 	})
 
@@ -73,12 +73,12 @@ var _ = Describe("Set", func() {
 		})
 
 		It("is possible to check if a whole different set is contained", func() {
-			subSet := ds.NewSet[string](2)
+			subSet := ds.PreallocatedSet[string](2)
 			subSet.Add("first")
 			subSet.Add("third")
 			Expect(set.ContainsSet(subSet)).To(BeTrue())
 
-			mismatchSet := ds.NewSet[string](3)
+			mismatchSet := ds.PreallocatedSet[string](3)
 			mismatchSet.Add("first")
 			mismatchSet.Add("third")
 			mismatchSet.Add("fifth")
@@ -153,7 +153,7 @@ var _ = Describe("Set", func() {
 
 		When("another set is added", func() {
 			BeforeEach(func() {
-				other := ds.NewSet[string](3)
+				other := ds.PreallocatedSet[string](5)
 				other.Add("second")
 				other.Add("third")
 				other.Add("fourth")
@@ -174,7 +174,7 @@ var _ = Describe("Set", func() {
 			})
 
 			It("returns false if the set is already contained", func() {
-				other := ds.NewSet[string](2)
+				other := ds.PreallocatedSet[string](2)
 				other.Add("second")
 				other.Add("third")
 				Expect(set.AddSet(other)).To(BeFalse())
@@ -183,7 +183,7 @@ var _ = Describe("Set", func() {
 
 		When("another set is removed", func() {
 			BeforeEach(func() {
-				other := ds.NewSet[string](2)
+				other := ds.PreallocatedSet[string](3)
 				other.Add("second")
 				other.Add("third")
 				other.Add("fourth")
@@ -199,7 +199,7 @@ var _ = Describe("Set", func() {
 			})
 
 			It("returns false if the set is not contained", func() {
-				other := ds.NewSet[string](2)
+				other := ds.PreallocatedSet[string](2)
 				other.Add("fourth")
 				other.Add("fifth")
 				Expect(set.RemoveSet(other)).To(BeFalse())
@@ -310,11 +310,11 @@ var _ = Describe("Set", func() {
 		)
 
 		BeforeEach(func() {
-			firstSet = ds.NewSet[string](2)
+			firstSet = ds.PreallocatedSet[string](2)
 			firstSet.Add("a")
 			firstSet.Add("b")
 
-			secondSet = ds.NewSet[string](2)
+			secondSet = ds.PreallocatedSet[string](2)
 			secondSet.Add("b")
 			secondSet.Add("c")
 
@@ -339,11 +339,11 @@ var _ = Describe("Set", func() {
 		)
 
 		BeforeEach(func() {
-			firstSet = ds.NewSet[string](2)
+			firstSet = ds.PreallocatedSet[string](2)
 			firstSet.Add("a")
 			firstSet.Add("b")
 
-			secondSet = ds.NewSet[string](2)
+			secondSet = ds.PreallocatedSet[string](2)
 			secondSet.Add("b")
 			secondSet.Add("c")
 
@@ -366,12 +366,12 @@ var _ = Describe("Set", func() {
 		)
 
 		BeforeEach(func() {
-			firstSet = ds.NewSet[string](3)
+			firstSet = ds.PreallocatedSet[string](3)
 			firstSet.Add("a")
 			firstSet.Add("b")
 			firstSet.Add("c")
 
-			secondSet = ds.NewSet[string](3)
+			secondSet = ds.PreallocatedSet[string](3)
 			secondSet.Add("b")
 			secondSet.Add("c")
 			secondSet.Add("d")

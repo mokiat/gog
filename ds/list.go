@@ -2,13 +2,28 @@ package ds
 
 import "slices"
 
-// NewList creates a new List with the given capacity. The capacity can be
-// used as a form of optimization. Regardless of the value, the initial size
-// of the list is zero and the list can grow past the specified capacity.
-func NewList[T comparable](initialCapacity int) *List[T] {
+// EmptyList creates a new empty List.
+func EmptyList[T comparable]() *List[T] {
+	return PreallocatedList[T](0)
+}
+
+// PreallocatedList creates a new List with the specified initial capacity,
+// which is only used to preallocate memory and does not act as an upper bound.
+func PreallocatedList[T comparable](initialCapacity int) *List[T] {
 	return &List[T]{
 		items: make([]T, 0, initialCapacity),
 	}
+}
+
+// NewList creates a new List with the given capacity. The capacity can be
+// used as a form of optimization. Regardless of the value, the initial size
+// of the list is zero and the list can grow past the specified capacity.
+//
+// Deprecated: Use EmptyList or PreallocatedList instead.
+//
+//go:fix inline
+func NewList[T comparable](initialCapacity int) *List[T] {
+	return PreallocatedList[T](initialCapacity)
 }
 
 // ListFromSlice constructs a new List that is based on the items from the

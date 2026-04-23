@@ -2,13 +2,29 @@ package ds
 
 import "slices"
 
+// EmptyStack creates an empty Stack instance.
+func EmptyStack[T any]() *Stack[T] {
+	return PreallocatedStack[T](0)
+}
+
+// PreallocatedStack creates a new Stack instance with the specified initial
+// capacity, which is only used to preallocate memory and does not act as
+// an upper bound.
+func PreallocatedStack[T any](initialCapacity int) *Stack[T] {
+	return &Stack[T]{
+		items: make([]T, 0, initialCapacity),
+	}
+}
+
 // NewStack creates a new Stack instance with the specified initial capacity,
 // which only serves to preallocate memory. Exceeding the initial capacity is
 // allowed.
-func NewStack[T any](initCapacity int) *Stack[T] {
-	return &Stack[T]{
-		items: make([]T, 0, initCapacity),
-	}
+//
+// Deprecated: Use EmptyStack or PreallocatedStack instead.
+//
+//go:fix inline
+func NewStack[T any](initialCapacity int) *Stack[T] {
+	return PreallocatedStack[T](initialCapacity)
 }
 
 // Stack is an implementation of a stack data structure. The last inserted

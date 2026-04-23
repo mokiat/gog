@@ -66,9 +66,9 @@ var _ = Describe("Func", func() {
 			Expect(fltr("c")).To(BeFalse())
 		})
 
-		It("returns true if the list of conditions is empty", func() {
+		It("returns false if the list of conditions is empty", func() {
 			fltr := filter.Or[string]()
-			Expect(fltr("irrelevant")).To(BeTrue())
+			Expect(fltr("irrelevant")).To(BeFalse())
 		})
 	})
 

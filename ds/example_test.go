@@ -8,7 +8,7 @@ import (
 )
 
 func ExampleHeap() {
-	heap := ds.NewHeap(0, func(a, b int) bool {
+	heap := ds.EmptyHeap(func(a, b int) bool {
 		return a < b
 	})
 	heap.Push(100)
@@ -32,7 +32,7 @@ func ExampleHeap() {
 }
 
 func ExampleList() {
-	list := ds.NewList[string](0)
+	list := ds.EmptyList[string]()
 	list.Add("first")
 	list.Add("second")
 	list.Add("third")
@@ -46,7 +46,7 @@ func ExampleList() {
 }
 
 func ExamplePool() {
-	pool := ds.NewPool[bytes.Buffer]()
+	pool := ds.EmptyPool[bytes.Buffer]()
 
 	buffer := pool.Fetch()
 	buffer.Reset()
@@ -62,7 +62,7 @@ func ExamplePool() {
 }
 
 func ExampleSet() {
-	set := ds.NewSet[int](0)
+	set := ds.EmptySet[int]()
 	set.Add(2)
 	set.Add(3)
 	set.Add(5)
@@ -80,7 +80,7 @@ func ExampleSet() {
 }
 
 func ExampleStack() {
-	stack := ds.NewStack[string](3)
+	stack := ds.EmptyStack[string]()
 	stack.Push("first")
 	stack.Push("second")
 	stack.Push("third")

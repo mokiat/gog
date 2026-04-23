@@ -2,15 +2,36 @@ package ds
 
 import "slices"
 
-// NewHeap creates a new Heap instance that is configured to use the
+// EmptyHeap creates a new empty Heap that is configured to use the specified
+// better function to order items. When better returns true, the first argument
+// will be placed higher in the heap.
+func EmptyHeap[T any](better func(a, b T) bool) *Heap[T] {
+	return PreallocatedHeap(0, better)
+}
+
+// PreallocatedHeap creates a new Heap instance that is configured to use the
 // specified better function to order items. When better returns true, the
 // first argument will be placed higher in the heap.
-// The specified initialCapacity is used to preallocate memory.
-func NewHeap[T any](initialCapacity int, better func(a, b T) bool) *Heap[T] {
+//
+// The specified initialCapacity is only used to preallocate memory and does
+// not act as an upper bound.
+func PreallocatedHeap[T any](initialCapacity int, better func(a, b T) bool) *Heap[T] {
 	return &Heap[T]{
 		better: better,
 		items:  make([]T, 0, initialCapacity),
 	}
+}
+
+// NewHeap creates a new Heap instance that is configured to use the
+// specified better function to order items. When better returns true, the
+// first argument will be placed higher in the heap.
+// The specified initialCapacity is used to preallocate memory.
+//
+// Deprecated: Use EmptyHeap or PreallocatedHeap instead.
+//
+//go:fix inline
+func NewHeap[T any](initialCapacity int, better func(a, b T) bool) *Heap[T] {
+	return PreallocatedHeap(initialCapacity, better)
 }
 
 // Heap is a data structure that orders items when inserted according to a
@@ -64,8 +85,8 @@ func (h *Heap[T]) Clear() {
 }
 
 // Clip removes unused capacity from the Heap.
-func (s *Heap[T]) Clip() {
-	s.items = slices.Clip(s.items)
+func (h *Heap[T]) Clip() {
+	h.items = slices.Clip(h.items)
 }
 
 func (h *Heap[T]) siftUp(value T, index int) {

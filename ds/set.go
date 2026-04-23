@@ -2,18 +2,34 @@ package ds
 
 import "maps"
 
-// NewSet creates a new Set instance with the specified initial capacity,
-// which is only used to preallocate memory and does not act as an upper bound.
-func NewSet[T comparable](initialCapacity int) *Set[T] {
+// EmptySet creates a new empty Set instance.
+func EmptySet[T comparable]() *Set[T] {
+	return PreallocatedSet[T](0)
+}
+
+// PreallocatedSet creates a new Set instance with the specified initial
+// capacity, which is only used to preallocate memory and does not act as
+// an upper bound.
+func PreallocatedSet[T comparable](initialCapacity int) *Set[T] {
 	return &Set[T]{
 		items: make(map[T]struct{}, initialCapacity),
 	}
 }
 
+// NewSet creates a new Set instance with the specified initial capacity,
+// which is only used to preallocate memory and does not act as an upper bound.
+//
+// Deprecated: Use EmptySet or PreallocatedSet instead.
+//
+//go:fix inline
+func NewSet[T comparable](initialCapacity int) *Set[T] {
+	return PreallocatedSet[T](initialCapacity)
+}
+
 // SetFromSlice creates a new Set instance based on the elements contained
 // in the provided slice.
 func SetFromSlice[T comparable](slice []T) *Set[T] {
-	result := NewSet[T](len(slice))
+	result := PreallocatedSet[T](len(slice))
 	for _, item := range slice {
 		result.items[item] = struct{}{}
 	}
@@ -23,7 +39,7 @@ func SetFromSlice[T comparable](slice []T) *Set[T] {
 // SetFromMapKeys creates a new Set instance based on the keys of the
 // provided map.
 func SetFromMapKeys[T comparable, V any](m map[T]V) *Set[T] {
-	result := NewSet[T](len(m))
+	result := PreallocatedSet[T](len(m))
 	for key := range m {
 		result.items[key] = struct{}{}
 	}
@@ -33,7 +49,7 @@ func SetFromMapKeys[T comparable, V any](m map[T]V) *Set[T] {
 // SetFromMapValues creates a new Set instance based on the values of the
 // provided map.
 func SetFromMapValues[K comparable, V comparable](m map[K]V) *Set[V] {
-	result := NewSet[V](len(m))
+	result := PreallocatedSet[V](len(m))
 	for _, value := range m {
 		result.items[value] = struct{}{}
 	}
@@ -42,7 +58,7 @@ func SetFromMapValues[K comparable, V comparable](m map[K]V) *Set[V] {
 
 // SetUnion creates a new Set that is the union of the specified sets.
 func SetUnion[T comparable](first, second *Set[T]) *Set[T] {
-	result := NewSet[T](first.Size() + second.Size())
+	result := PreallocatedSet[T](first.Size() + second.Size())
 	for item := range first.items {
 		result.items[item] = struct{}{}
 	}
@@ -55,7 +71,7 @@ func SetUnion[T comparable](first, second *Set[T]) *Set[T] {
 // SetDifference creates a new Set that holds the difference between the
 // first and the second specified sets.
 func SetDifference[T comparable](first, second *Set[T]) *Set[T] {
-	result := NewSet[T](first.Size())
+	result := PreallocatedSet[T](first.Size())
 	for item := range first.items {
 		if _, ok := second.items[item]; !ok {
 			result.items[item] = struct{}{}
@@ -67,7 +83,7 @@ func SetDifference[T comparable](first, second *Set[T]) *Set[T] {
 // SetIntersection creates a new Set that holds the intersection of the
 // items of the two specified sets.
 func SetIntersection[T comparable](first, second *Set[T]) *Set[T] {
-	result := NewSet[T](0)
+	result := PreallocatedSet[T](0)
 	for item := range first.items {
 		if _, ok := second.items[item]; ok {
 			result.items[item] = struct{}{}
@@ -188,9 +204,7 @@ func (s *Set[T]) Equals(other *Set[T]) bool {
 
 // Clear removes all items from this Set.
 func (s *Set[T]) Clear() {
-	for v := range s.items {
-		delete(s.items, v)
-	}
+	clear(s.items)
 }
 
 // Clip removes unused capacity from the Set.

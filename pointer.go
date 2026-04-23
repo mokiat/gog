@@ -1,8 +1,13 @@
 package gog
 
 // PtrOf returns a pointer to the passed value.
+//
+// Deprecated: Use the built-in new function instead. For example,
+// instead of PtrOf(42), use new(42).
+//
+//go:fix inline
 func PtrOf[T any](v T) *T {
-	return &v
+	return new(v)
 }
 
 // ValueOf is the opposite of PtrOf. It takes a pointer and dereferences it.
